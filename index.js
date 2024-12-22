@@ -1,6 +1,8 @@
 import winston from "winston";
 
-const logger = winston.createLogger();
+const logger = winston.createLogger({
+  transports: new winston.transports.Console(),
+});
 export const handler = async (event) => {
     // TODO implement
     const response = {
