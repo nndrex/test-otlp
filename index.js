@@ -46,7 +46,7 @@ exports.handler = async (event, context) => {
   });
   // TODO implement
   logger.info(event)
-  switch (event) {
+  switch (event.eventType) {
     case "greetings":
       await greetings(context);
       break;
