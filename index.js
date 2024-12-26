@@ -25,15 +25,11 @@ const logger = winston.createLogger({
   ],
 });
 async function greetings(context) {
-  const startTime = new Date().getTime();
   const response = {
     statusCode: 200,
     body: JSON.stringify("Hello from greetings!"),
   };
   logger.info(context);
-  const endTime = new Date().getTime();
-  const executionTime = endTime - startTime;
-  histogram.record(executionTime);
   return response;
 }
 
@@ -45,23 +41,23 @@ exports.handler = async (event, context) => {
     valueType: ValueType.INT,
   });
   // TODO implement
-  logger.info(event)
+  logger.info(event);
+  const startTime = new Date().getTime();
+  let response;
   switch (event.eventType) {
     case "greetings":
-      await greetings(context);
+      response = await greetings(context);
       break;
-
     default:
-      const startTime = new Date().getTime();
-      const response = {
+      response = {
         statusCode: 200,
         body: JSON.stringify("Hello from home!"),
       };
       logger.info("Hello from home! correctly sended");
-      const endTime = new Date().getTime();
-      const executionTime = endTime - startTime;
-      histogram.record(executionTime);
-      return response;
       break;
   }
+  const endTime = new Date().getTime();
+  const executionTime = endTime - startTime;
+  histogram.record(executionTime);
+  return response;
 };
